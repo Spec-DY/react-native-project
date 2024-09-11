@@ -9,7 +9,7 @@ export default function App() {
     <View style={styles.container}>
       <Header name = "Thunder" />
       <StatusBar style="auto" />
-      <Input/>
+      <Input autoFocus={true}/>
       {/* <Text>typed:{text}</Text> */}
     </View>
 

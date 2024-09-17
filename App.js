@@ -27,7 +27,7 @@ export default function App() {
       },
       {
         text:"OK",
-        onPress: () => setModalVisibility(false)
+        onPress: () => {setModalVisibility(false); }
       }
     ]
   )

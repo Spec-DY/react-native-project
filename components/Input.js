@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { View, TextInput, Text, StyleSheet, Button, Modal } from "react-native";
 
-const Input = ({autoFocus, onConfirm, modalVisibility}) => {
+const Input = ({autoFocus, onConfirm, modalVisibility, onCancel}) => {
     const [text, setText] = useState('')
     const [hasBlurred, setHasBlurred] = useState('')
     const handleBlur = ()=> {setHasBlurred(true)};
     const handleFocus = ()=> {setHasBlurred(false)};
     function handleConfirm() {
-            onConfirm(text)
+        onConfirm(text)
     }
-
 
     return(
         <Modal
@@ -42,8 +41,11 @@ const Input = ({autoFocus, onConfirm, modalVisibility}) => {
                     )}
 
                     <View style={styles.button}>
-                        <Button title="Confirm" onPress={handleConfirm}/>
+                        <Button title="Confirm" onPress={handleConfirm} />
+                        <View style={{width:20}}></View>
+                        <Button title="Cancel" onPress={onCancel} />
                     </View>
+
                 </View>
             </View>
         </Modal>
@@ -68,6 +70,9 @@ const styles = StyleSheet.create({
     button: {
       width: '30%',
       margin: "2%",
+      flexDirection: "row",
+      justifyContent: 'center'
+
     },
     modal: {
         width: '83%',

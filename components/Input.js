@@ -24,10 +24,14 @@ const Input = ({autoFocus, onConfirm, modalVisibility, onCancel}) => {
             <View style={styles.container}>
                 
                 <View style={styles.modal}>
-                    <Image source={{uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png"}}
-                        style= {styles.image} />
-                    <Image source={require("../assets/arrow.png")}
-                    style={styles.image}/>
+                    <Image 
+                        source={{uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png"}}
+                        style= {styles.image} 
+                        alt="darts"/>
+                    <Image 
+                        source={require("../assets/arrow.png")}
+                        style={styles.image}
+                        alt="darts"/>
                     <TextInput
                         style = {styles.textInput}
                         autoCorrect={true}

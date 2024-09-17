@@ -1,17 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View, Button,SafeAreaView } from 'react-native';
 import Header from "./components/Header.js";
 import { useState } from 'react';
 import Input from "./components/Input.js";
 
 export default function App() {
+  const [text, setText] = useState("");
+  const [modalVisibility, setModalVisibility] = useState(false);
+
+  function handleInputData(inputData) {
+    setText(inputData)
+    setModalVisibility(false);
+  }
+
+  function handleModalVisibility(){
+    setModalVisibility(!modalVisibility)
+  }
   return (
-    <View style={styles.container}>
-      <Header name = "Thunder" />
-      <StatusBar style="auto" />
-      <Input autoFocus={true}/>
-      {/* <Text>typed:{text}</Text> */}
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.top} >
+        <Header name = "THIS App" />
+        <StatusBar style="auto" />
+        
+        <View style={styles.button}>
+          <Button title="Add a goal" onPress={handleModalVisibility} />
+        </View>
+      </View>
+
+      <Input autoFocus={true} onConfirm={handleInputData} modalVisibility={modalVisibility}/>
+      
+      <View style={styles.bottom}>
+        <View style={styles.bottomText}>
+          <Text style={styles.text}>typed:{text}</Text>
+        </View>
+      </View>
+    </SafeAreaView>
 
   );
 }
@@ -21,6 +44,31 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
+  top:{
+    flex:1,
+    justifyContent:"center",
+    alignItems:"center"
+  }, 
+  bottom:{
+    flex: 4,
+    backgroundColor: "aqua",
+    alignItems:"center",
+    width:"100%"
+  },
+  bottomText:{
+    borderRadius:10,
+    backgroundColor:"cornsilk"
+  },
+  text: {
+    fontSize: 14,
+    color: '#dc143c',
+    marginTop: "2%",
+    padding:5,
+  },
+  button: {
+    width: '30%',
+    margin: "2%"
+  }
 });

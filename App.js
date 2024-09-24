@@ -40,6 +40,12 @@ export default function App() {
   )
   }
 
+  function handleDelete(goalId){
+    setGoals((currentGoals) => {
+      return currentGoals.filter((goal) => goal.id !== goalId);
+    });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.top} >
@@ -59,12 +65,10 @@ export default function App() {
       <View style={styles.bottom}>
         {/* goals */}
         <FlatList
+          contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          renderItem={(itemData) => (
-            <View style={styles.goalItem}>
-              <Text style={styles.goalText}>{itemData.item.text}</Text>
-            </View>
-          )}
+          
+          renderItem={(itemData) => <GoalItem goal={itemData.item} onDelete={handleDelete}/>}
           keyExtractor={(item) => item.id}
         />
       </View>
@@ -88,7 +92,6 @@ const styles = StyleSheet.create({
   bottom:{
     flex: 4,
     backgroundColor: "aqua",
-    alignItems:"center",
     width:"100%",
     padding:"1%"
 
@@ -112,5 +115,9 @@ const styles = StyleSheet.create({
     backgroundColor:"grey",
     margin: "1%",
     padding: 5
+  },
+  scrollViewContainer:{
+    alignItems:"center"
+
   }
 });

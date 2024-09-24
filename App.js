@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Pressable, StyleSheet, Text, TextInput, View, Button,SafeAreaView } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View, Button,SafeAreaView,Alert } from 'react-native';
 import Header from "./components/Header.js";
 import { useState } from 'react';
 import Input from "./components/Input.js";
@@ -16,6 +16,25 @@ export default function App() {
   function handleModalVisibility(){
     setModalVisibility(!modalVisibility)
   }
+
+  function handleCancel() {
+    Alert.alert(
+      "Example Alert",
+      "Are you sure to cancel?",
+    [
+      {
+        text:"Cancel"
+      },
+      {
+        text:"OK",
+        onPress: () => {setModalVisibility(false); }
+      }
+    ]
+  )
+  }
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.top} >
@@ -27,7 +46,10 @@ export default function App() {
         </View>
       </View>
 
-      <Input autoFocus={true} onConfirm={handleInputData} modalVisibility={modalVisibility}/>
+      <Input  autoFocus={true}
+              onConfirm={handleInputData} 
+              modalVisibility={modalVisibility} 
+              onCancel={handleCancel}/>
       
       <View style={styles.bottom}>
         <View style={styles.bottomText}>

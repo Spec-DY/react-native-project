@@ -67,7 +67,12 @@ export default function App() {
         <FlatList
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          
+          ListEmptyComponent={()=> (
+            <Text style={styles.goalEmptyHeader}>No Goal To Show</Text>
+          )}
+          ListHeaderComponent={()=> (
+            goals.length > 0 ? <Text style={styles.goalHeader}>My Goals</Text>: null
+          )}
           renderItem={(itemData) => <GoalItem goal={itemData.item} onDelete={handleDelete}/>}
           keyExtractor={(item) => item.id}
         />
@@ -96,10 +101,6 @@ const styles = StyleSheet.create({
     padding:"1%"
 
   },
-  bottomText:{
-    borderRadius:10,
-    backgroundColor:"cornsilk"
-  },
   text: {
     fontSize: 14,
     color: '#dc143c',
@@ -118,6 +119,19 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer:{
     alignItems:"center"
-
+  },
+  goalEmptyHeader:{
+    backgroundColor:"white",
+    color:'#808080',
+    padding:'1%',
+    fontSize:25,
+    borderRadius:10
+  },
+  goalHeader:{
+    backgroundColor:"lightcyan",
+    color:'#808080',
+    padding:'1%',
+    fontSize:25,
+    borderRadius:10
   }
 });

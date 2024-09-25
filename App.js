@@ -91,6 +91,9 @@ export default function App() {
           ): null}
           renderItem={(itemData) => <GoalItem goal={itemData.item} onDelete={handleDelete}/>}
           keyExtractor={(item) => item.id}
+          ItemSeparatorComponent={()=> 
+            <View style={styles.seperator}/>
+          }
         />
       </View>
     </SafeAreaView>
@@ -154,5 +157,9 @@ const styles = StyleSheet.create({
   },
   deleteAllMargin: {
     marginTop:'10%'
+  },
+  seperator: {
+    backgroundColor:"midnightblue",
+    height:2,
   }
 });

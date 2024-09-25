@@ -46,6 +46,17 @@ export default function App() {
     });
   }
 
+  function handleDeleteAll(){
+    Alert.alert(
+      "Delete All Goals",
+      "Are you sure to delete all goals?",
+      [
+        { text: "No" },
+        { text: "Yes", onPress: () => setGoals([]) }
+      ]
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.top} >
@@ -73,6 +84,11 @@ export default function App() {
           ListHeaderComponent={()=> (
             goals.length > 0 ? <Text style={styles.goalHeader}>My Goals</Text>: null
           )}
+          ListFooterComponent={()=> goals.length > 0 ?(
+            <View style={styles.deleteAllMargin}>
+              <Button title="Delete all" onPress={handleDeleteAll}/>
+            </View>
+          ): null}
           renderItem={(itemData) => <GoalItem goal={itemData.item} onDelete={handleDelete}/>}
           keyExtractor={(item) => item.id}
         />
@@ -133,5 +149,10 @@ const styles = StyleSheet.create({
     padding:'1%',
     fontSize:25,
     borderRadius:10
+  },
+  deleteAllGoal: {
+  },
+  deleteAllMargin: {
+    marginTop:'10%'
   }
 });

@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet, Button} from "react-native";
 
-const GoalItem=({goal, onDelete}) => {
+const GoalItem=({goal, onDelete, onGoalPress}) => {
     console.log(goal)
 
     return (
@@ -11,6 +11,8 @@ const GoalItem=({goal, onDelete}) => {
                 color="red" 
                 onPress={() => onDelete(goal.id)}
             />
+            <View style={{margin:5}} />
+            <Button title="i" onPress={()=>onGoalPress(goal)} />
         </View>
     )
 }

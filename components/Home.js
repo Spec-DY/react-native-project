@@ -5,7 +5,8 @@ import { useState } from 'react';
 import Input from "./Input.js";
 import GoalItem from './GoalItem.js';
 
-export default function Home() {
+
+export default function Home({navigation}) {
   const [goals, setGoals] = useState([]);
   const [text, setText] = useState("");
   const [modalVisibility, setModalVisibility] = useState(false);
@@ -57,6 +58,11 @@ export default function Home() {
     );
   }
 
+  function handleNavigate(goal) {
+    navigation.navigate("Details", { goal})
+    console.log(goal)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.top} >
@@ -78,6 +84,7 @@ export default function Home() {
         <FlatList
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
+          handleNavigate={handleNavigate}
           ListEmptyComponent={()=> (
             <Text style={styles.goalEmptyHeader}>No Goal To Show</Text>
           )}
@@ -89,7 +96,9 @@ export default function Home() {
               <Button title="Delete all" onPress={handleDeleteAll}/>
             </View>
           ): null}
-          renderItem={(itemData) => <GoalItem goal={itemData.item} onDelete={handleDelete}/>}
+          renderItem={(itemData) => 
+          <GoalItem goal={itemData.item} onDelete={handleDelete} onGoalPress={handleNavigate}/>
+            }
           keyExtractor={(item) => item.id}
           ItemSeparatorComponent={()=> 
             <View style={styles.seperator}/>

@@ -46,6 +46,17 @@ export default function App() {
     });
   }
 
+  function handleDeleteAll(){
+    Alert.alert(
+      "Delete All Goals",
+      "Are you sure to delete all goals?",
+      [
+        { text: "No" },
+        { text: "Yes", onPress: () => setGoals([]) }
+      ]
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.top} >
@@ -67,9 +78,22 @@ export default function App() {
         <FlatList
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          
+          ListEmptyComponent={()=> (
+            <Text style={styles.goalEmptyHeader}>No Goal To Show</Text>
+          )}
+          ListHeaderComponent={()=> (
+            goals.length > 0 ? <Text style={styles.goalHeader}>My Goals</Text>: null
+          )}
+          ListFooterComponent={()=> goals.length > 0 ?(
+            <View style={styles.deleteAllMargin}>
+              <Button title="Delete all" onPress={handleDeleteAll}/>
+            </View>
+          ): null}
           renderItem={(itemData) => <GoalItem goal={itemData.item} onDelete={handleDelete}/>}
           keyExtractor={(item) => item.id}
+          ItemSeparatorComponent={()=> 
+            <View style={styles.seperator}/>
+          }
         />
       </View>
     </SafeAreaView>
@@ -96,10 +120,6 @@ const styles = StyleSheet.create({
     padding:"1%"
 
   },
-  bottomText:{
-    borderRadius:10,
-    backgroundColor:"cornsilk"
-  },
   text: {
     fontSize: 14,
     color: '#dc143c',
@@ -118,6 +138,28 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer:{
     alignItems:"center"
-
+  },
+  goalEmptyHeader:{
+    backgroundColor:"white",
+    color:'#808080',
+    padding:'1%',
+    fontSize:25,
+    borderRadius:10
+  },
+  goalHeader:{
+    backgroundColor:"lightcyan",
+    color:'#808080',
+    padding:'1%',
+    fontSize:25,
+    borderRadius:10
+  },
+  deleteAllGoal: {
+  },
+  deleteAllMargin: {
+    marginTop:'10%'
+  },
+  seperator: {
+    backgroundColor:"midnightblue",
+    height:2,
   }
 });

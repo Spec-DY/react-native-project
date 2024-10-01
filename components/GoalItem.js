@@ -18,7 +18,7 @@ const GoalItem=({goal, onDelete}) => {
 const styles = StyleSheet.create({
     container: {
       borderRadius: 10,
-      backgroundColor: "green",
+      backgroundColor: "lavender",
       margin: "1%",
       padding: 5,
       flexDirection: 'row',
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     },
     goalText: {
       fontSize: 20,
-      color: 'white',
+      color: 'grey',
     },
   });
   

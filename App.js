@@ -26,14 +26,7 @@ export default function App() {
             options={{title:"My Goal"}}/>
           <Stack.Screen 
             name="Details" 
-            component={GoalDetails}
-            options={({route})=>{return {
-            title: route.params? route.params.goal.text: "More Details",
-            headerRight:()=>{
-              return <Button title="Warning" onPress={()=>{
-                console.log("warning")
-              }}/>
-            }}}} />
+            component={GoalDetails}/>
       </Stack.Navigator>
     </NavigationContainer>
       

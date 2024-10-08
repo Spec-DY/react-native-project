@@ -1,6 +1,7 @@
 import {View, Text, StyleSheet, Button, Pressable} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import PressableButton from "./PressableButton";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const GoalItem=({goal, onDelete}) => {
     console.log(goal)
@@ -22,11 +23,14 @@ const GoalItem=({goal, onDelete}) => {
       <Text style={styles.goalText}>{goal.text}</Text>
       <View style={{ margin: 5 }} />
 
-        <PressableButton
-          title="X"
+        <PressableButton 
           onPress={() => onDelete(goal.id)}
           style={styles.deleteButton}
-        />
+          pressedStyle={{ backgroundColor: 'red' }}
+        >
+          <MaterialIcons name="delete-forever" size={24} color="white" />
+        </PressableButton>
+
     </Pressable>
   );
 };

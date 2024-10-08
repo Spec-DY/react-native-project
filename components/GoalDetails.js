@@ -26,7 +26,8 @@ export default function GoalDetails({route, navigation}){
       headerRight: () => (
         <PressableButton
           onPress={handleWarning}
-          style={{ marginRight: 10}}
+          pressedStyle={{ backgroundColor: 'orange' }}
+          style={{backgroundColor:'red'}}
         >
           <Ionicons name="warning" size={24} color="orange" />
         </PressableButton>

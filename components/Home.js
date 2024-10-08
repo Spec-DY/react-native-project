@@ -71,10 +71,13 @@ export default function Home({navigation}) {
         <StatusBar style="auto" />
         
         <PressableButton 
-          title="Add a goal" 
-          onPress={handleModalVisibility} 
+          onPress={handleModalVisibility}
           style={styles.addGoal} 
-        />
+          pressedStyle={{ backgroundColor: 'grey' }}
+        >
+          <Text style={styles.addButtonText}>Add a goal</Text>
+        </PressableButton>
+
 
       </View>
 
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
     margin: "2%",
     paddingHorizontal: 15,
     paddingVertical: 10,
-    color:'red'
+    
   },
   goalItem: {
     borderRadius:10,
@@ -176,5 +179,8 @@ const styles = StyleSheet.create({
   seperator: {
     backgroundColor:"midnightblue",
     height:2,
+  },
+  addButtonText: {
+    fontSize:18
   }
 });

@@ -2,6 +2,8 @@ import { NavigationHelpersContext } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import {Text, View, Button} from "react-native"
 import { useState } from "react";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import PressableButton from "./PressableButton";
 
 
 export default function GoalDetails({route, navigation}){
@@ -22,11 +24,13 @@ export default function GoalDetails({route, navigation}){
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button
-          title="Warning"
+        <PressableButton
           onPress={handleWarning}
-          color="red"
-        />
+          pressedStyle={{ backgroundColor: 'orange' }}
+          style={{backgroundColor:'red'}}
+        >
+          <Ionicons name="warning" size={24} color="orange" />
+        </PressableButton>
       ),
     });
   }, [navigation]);

@@ -4,6 +4,7 @@ import Header from "./Header.js";
 import { useState } from 'react';
 import Input from "./Input.js";
 import GoalItem from './GoalItem.js';
+import PressableButton from './PressableButton.js';
 
 
 export default function Home({navigation}) {
@@ -69,9 +70,12 @@ export default function Home({navigation}) {
         <Header name = "THIS App" />
         <StatusBar style="auto" />
         
-        <View style={styles.button}>
-          <Button title="Add a goal" onPress={handleModalVisibility} />
-        </View>
+        <PressableButton 
+          title="Add a goal" 
+          onPress={handleModalVisibility} 
+          style={styles.addGoal} 
+        />
+
       </View>
 
       <Input  autoFocus={true}
@@ -135,9 +139,11 @@ const styles = StyleSheet.create({
     marginTop: "2%",
     padding:5,
   },
-  button: {
-    width: '30%',
-    margin: "2%"
+  addGoal: {
+    margin: "2%",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    color:'red'
   },
   goalItem: {
     borderRadius:10,

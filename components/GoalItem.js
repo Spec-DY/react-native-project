@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import PressableButton from "./PressableButton";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-const GoalItem=({goal, onDelete}) => {
+const GoalItem=({goal, onDelete, onPressIn, onPressOut}) => {
     console.log(goal)
     const navigation = useNavigation();
 
@@ -28,6 +28,8 @@ const GoalItem=({goal, onDelete}) => {
         styles.container,
         pressed && styles.pressedContainer
       ]}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
       onLongPress={handleLongPress}
       onPress={handleNavigate}
       android_ripple={{ color: "lightgrey" }}

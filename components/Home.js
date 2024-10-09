@@ -64,6 +64,26 @@ export default function Home({navigation}) {
     console.log(goal)
   }
 
+  const ItemSeparatorComponent = ({ highlighted }) => (
+    <View
+    style={[
+      styles.separator,
+      {backgroundColor: highlighted? 'red' : 'black'}
+    ]}
+    />
+  );
+  
+  const renderItem = ({ item, separators }) => (
+      <GoalItem
+        goal={item}
+        onDelete={handleDelete}
+        onGoalPress={handleNavigate}
+        onPressIn={separators.highlight}
+        onPressOut={separators.unhighlight}
+      />
+
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.top} >
@@ -103,13 +123,10 @@ export default function Home({navigation}) {
               <Button title="Delete all" onPress={handleDeleteAll}/>
             </View>
           ): null}
-          renderItem={(itemData) => 
-          <GoalItem goal={itemData.item} onDelete={handleDelete} onGoalPress={handleNavigate}/>
-            }
+
+          renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          ItemSeparatorComponent={()=> 
-            <View style={styles.seperator}/>
-          }
+          ItemSeparatorComponent={ItemSeparatorComponent}
         />
       </View>
     </SafeAreaView>
@@ -171,14 +188,14 @@ const styles = StyleSheet.create({
     fontSize:25,
     borderRadius:10
   },
+  separator: {
+    height: 3,
+    backgroundColor: "black",
+  },
   deleteAllGoal: {
   },
   deleteAllMargin: {
     marginTop:'10%'
-  },
-  seperator: {
-    backgroundColor:"midnightblue",
-    height:2,
   },
   addButtonText: {
     fontSize:18

@@ -1,10 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { Pressable, StyleSheet, Text, TextInput, View, Button,SafeAreaView,Alert, FlatList } from 'react-native';
 import Header from "./Header.js";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Input from "./Input.js";
 import GoalItem from './GoalItem.js';
 import PressableButton from './PressableButton.js';
+import { deleteAllFromDB, deleteFromDB, writeToDB } from '../Firebase/firestoreHelper.js';
+import { collection, onSnapshot, snapshotEqual } from 'firebase/firestore';
+import { database } from '../Firebase/firebaseSetup.js';
 
 
 export default function Home({navigation}) {
@@ -12,11 +15,26 @@ export default function Home({navigation}) {
   const [text, setText] = useState("");
   const [modalVisibility, setModalVisibility] = useState(false);
 
-  function handleInputData(inputData) {
-    setGoals((currentGoals) => [
-      ...currentGoals,
-      { text: inputData, id: Math.random().toString() },
-    ]);
+  useEffect(()=>{
+    onSnapshot(collection(database, 'goals'), (querySnapshot)=>{
+      updatedGoals=[]
+      
+      querySnapshot.forEach((docSnapshot)=>{
+        
+        updatedGoals.push({ id: docSnapshot.id, ...docSnapshot.data() });
+        console.log(updatedGoals);
+        console.log("snapshot.data", docSnapshot.data())
+      });
+    setGoals(updatedGoals);
+  });
+    return () => unsubscribe();
+  }, []);
+
+  async function handleInputData(inputData) {
+
+    const newGoal = {text: inputData}
+    console.log("newGoal: ", newGoal)
+    await writeToDB("goals", newGoal);
 
     // set modal
     setModalVisibility(false);
@@ -43,9 +61,8 @@ export default function Home({navigation}) {
   }
 
   function handleDelete(goalId){
-    setGoals((currentGoals) => {
-      return currentGoals.filter((goal) => goal.id !== goalId);
-    });
+
+    deleteFromDB(goalId, 'goals');
   }
 
   function handleDeleteAll(){
@@ -54,7 +71,9 @@ export default function Home({navigation}) {
       "Are you sure to delete all goals?",
       [
         { text: "No" },
-        { text: "Yes", onPress: () => setGoals([]) }
+        { text: "Yes", onPress: async () => 
+          await deleteAllFromDB()
+        }
       ]
     );
   }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 const PressableButton = ({ onPress, style, pressedStyle, ripple, children }) => {
+    
   return (
     <Pressable
       onPress={onPress}

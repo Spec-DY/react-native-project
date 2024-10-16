@@ -1,18 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { Pressable, StyleSheet, Text, TextInput, View, Button,SafeAreaView,Alert, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button,SafeAreaView,Alert, FlatList } from 'react-native';
 import Header from "./Header.js";
 import { useEffect, useState } from 'react';
 import Input from "./Input.js";
 import GoalItem from './GoalItem.js';
 import PressableButton from './PressableButton.js';
 import { deleteAllFromDB, deleteFromDB, writeToDB } from '../Firebase/firestoreHelper.js';
-import { collection, onSnapshot, snapshotEqual } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { database } from '../Firebase/firebaseSetup.js';
 
 
 export default function Home({navigation}) {
   const [goals, setGoals] = useState([]);
-  const [text, setText] = useState("");
   const [modalVisibility, setModalVisibility] = useState(false);
 
   useEffect(()=>{

@@ -17,13 +17,13 @@ export default function Home({navigation}) {
 
   useEffect(()=>{
     onSnapshot(collection(database, 'goals'), (querySnapshot)=>{
-      updatedGoals=[]
+      const updatedGoals=[]
       
       querySnapshot.forEach((docSnapshot)=>{
         
         updatedGoals.push({ id: docSnapshot.id, ...docSnapshot.data() });
-        console.log(updatedGoals);
-        console.log("snapshot.data", docSnapshot.data())
+        console.log("updatedGoals: ",updatedGoals);
+        console.log("snapshot.data: ", docSnapshot.data())
       });
     setGoals(updatedGoals);
   });

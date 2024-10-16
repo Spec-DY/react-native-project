@@ -4,6 +4,7 @@ import {Text, View, Button} from "react-native"
 import { useState } from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import PressableButton from "./PressableButton";
+import { setWarningFlag } from "../Firebase/firestoreHelper";
 
 
 export default function GoalDetails({route, navigation}){
@@ -16,9 +17,18 @@ export default function GoalDetails({route, navigation}){
   }
 
 
-  function handleWarning() {
-    setIsWarning(true)
-    navigation.setOptions({ title:"Warning!"})
+  async function handleWarning() {
+    setIsWarning(true);
+    navigation.setOptions({ title: "Warning!" });
+
+    if (goal?.id) {
+      try {
+        await setWarningFlag(goal.id);
+        console.log(`Goal with ID ${goal.id} has been updated with warning:true.`);
+      } catch (error) {
+        console.log("Error setting warning in Firestore:", error);
+      }
+    }
   }
 
   useLayoutEffect(() => {

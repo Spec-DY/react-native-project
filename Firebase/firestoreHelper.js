@@ -1,4 +1,4 @@
-import { collection, addDoc, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { collection, addDoc, deleteDoc, doc, getDocs,updateDoc } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
 
@@ -34,4 +34,14 @@ export async function deleteAllFromDB() {
     } catch (err) {
       console.log("Error deleting all documents: ", err);
     }
+}
+
+export async function setWarningFlag(goalId) {
+  try {
+    const docRef = doc(database, "goals", goalId);
+    await updateDoc(docRef, { warning: true });
+    console.log(`Goal ${goalId} has been updated with warning:true.`);
+  } catch (err) {
+    console.log("Error setting warning flag: ", err);
   }
+}

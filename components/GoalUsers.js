@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Button } from 'react-native';
 import { getUsersFromGoal, addUserToGoal } from '../Firebase/firestoreHelper';
 
 function GoalUsers({ goalId }) {
@@ -14,21 +14,21 @@ function GoalUsers({ goalId }) {
         // set user data if there is
         setUsers(storedUsers);
       } else {
-        // not data in firebase, use API
+        // no data in firebase, use API
         try {
           const response = await fetch('https://jsonplaceholder.typicode.com/users');
           const apiUsers = await response.json();
           
           // store data from API to firebase sub collection
-        for (let user of apiUsers) {
+          for (let user of apiUsers) {
             if (user.name) {
-            await addUserToGoal(goalId, { name: user.name });
+              await addUserToGoal(goalId, { name: user.name });
             } else {
-            console.error("User data missing name field:", user);
+              console.error("User data missing name field:", user);
             }
-        }
+          }
   
-        // update set user
+          // update set user
           setUsers(apiUsers);
         } catch (error) {
           console.error('error fetching user data:', error);
@@ -39,7 +39,31 @@ function GoalUsers({ goalId }) {
     fetchUsers();
   }, [goalId]);
 
+  // Function to send a POST request
+  const addUserToServer = async () => {
+    const fakeUser = {
+      name: "John Doe", // fake user object
+    };
 
+    try {
+      const response = await fetch('/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(fakeUser),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Successfully added user:", data);
+    } catch (error) {
+      console.error("Error adding user:", error);
+    }
+  };
 
   return (
     <View>
@@ -50,6 +74,9 @@ function GoalUsers({ goalId }) {
           <Text>{item.name}</Text>
         )}
       />
+
+      {/* button to trigger POST */}
+      <Button title="Add Fake User" onPress={addUserToServer} />
     </View>
   );
 }

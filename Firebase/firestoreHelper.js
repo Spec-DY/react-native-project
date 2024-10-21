@@ -45,3 +45,38 @@ export async function setWarningFlag(goalId) {
     console.log("Error setting warning flag: ", err);
   }
 }
+
+export async function addUserToGoal(goalId, userData) {
+  try {
+    if (!goalId) {
+      throw new Error("Invalid goalId");
+    }
+    
+    if (!userData || !userData.name) {
+      throw new Error("Invalid userData object passed");
+    }
+    const usersSubCollectionRef = collection(database, "goals", goalId, "users");
+    const docRef = await addDoc(usersSubCollectionRef, userData);
+    console.log("User added to subcollection with ID: ", docRef.id);
+    return docRef;
+  } catch (err) {
+    console.error("Error while adding user to subcollection: ", err);
+    if (err.stack) {
+      console.error("Stack trace:", err.stack);
+    }
+  }
+}
+
+
+
+export async function getUsersFromGoal(goalId) {
+  try {
+    const usersSubCollectionRef = collection(database, "goals", goalId, "users");
+    const querySnapshot = await getDocs(usersSubCollectionRef);
+    const users = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return users;
+  } catch (err) {
+    console.error("error get user data: ", err);
+    return [];
+  }
+}

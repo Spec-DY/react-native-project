@@ -5,6 +5,7 @@ import { useState } from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import PressableButton from "./PressableButton";
 import { setWarningFlag } from "../Firebase/firestoreHelper";
+import GoalUsers from "./GoalUsers";
 
 
 export default function GoalDetails({route, navigation}){
@@ -54,6 +55,7 @@ export default function GoalDetails({route, navigation}){
               <Text style={isWarning && {color:'red'}}>Goal: {goal.text}</Text>
               <Text style={isWarning && {color:'red'}}>ID: {goal.id}</Text>
               <Button title="More Details" onPress={moreDetailsHandler} />
+              <GoalUsers goalId={goal.id} />
               </View>
       ) : (
           <Text style={isWarning && {color:'red'}}>No Goal Details Available</Text>

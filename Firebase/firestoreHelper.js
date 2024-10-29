@@ -1,10 +1,17 @@
 import { collection, addDoc, deleteDoc, doc, getDocs,updateDoc } from "firebase/firestore";
 import { database } from "./firebaseSetup";
+import { auth} from "./firebaseSetup"
 
 
 export async function writeToDB(collectionName, data) {
 	try {
-	    const docRef = await addDoc(collection(database, collectionName), data);
+    if (!auth.currentUser) {
+      throw new Error("User is not authenticated");
+    }
+
+    // Add the current user's UID to the data
+    const goal = { ...data, owner: auth.currentUser.uid };
+	    const docRef = await addDoc(collection(database, collectionName), goal);
         console.log(docRef.id)
         return docRef
 	  }

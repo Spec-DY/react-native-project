@@ -6,28 +6,46 @@ import Input from "./Input.js";
 import GoalItem from './GoalItem.js';
 import PressableButton from './PressableButton.js';
 import { deleteAllFromDB, deleteFromDB, writeToDB } from '../Firebase/firestoreHelper.js';
-import { collection, onSnapshot } from 'firebase/firestore';
-import { database } from '../Firebase/firebaseSetup.js';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { auth, database } from '../Firebase/firebaseSetup.js';
 
 
 export default function Home({navigation}) {
   const [goals, setGoals] = useState([]);
   const [modalVisibility, setModalVisibility] = useState(false);
 
-  useEffect(()=>{
-    onSnapshot(collection(database, 'goals'), (querySnapshot)=>{
-      const updatedGoals=[]
-      
-      querySnapshot.forEach((docSnapshot)=>{
-        
-        updatedGoals.push({ id: docSnapshot.id, ...docSnapshot.data() });
-        console.log("updatedGoals: ",updatedGoals);
-        console.log("snapshot.data: ", docSnapshot.data())
-      });
-    setGoals(updatedGoals);
-  });
-    return () => unsubscribe();
+  useEffect(() => {
+    // Ensure user is authenticated before setting up the snapshot
+    if (auth.currentUser) {
+      // Define query to filter by owner
+      const goalsQuery = query(
+        collection(database, 'goals'),
+        where('owner', '==', auth.currentUser.uid)
+      );
+  
+      // Set up onSnapshot with an error handler
+      const unsubscribe = onSnapshot(
+        goalsQuery,
+        (querySnapshot) => {
+          const updatedGoals = [];
+          querySnapshot.forEach((docSnapshot) => {
+            updatedGoals.push({ id: docSnapshot.id, ...docSnapshot.data() });
+          });
+          setGoals(updatedGoals);
+        },
+        (error) => {
+          // Handle permission errors or other issues
+          console.error("Error fetching goals:", error);
+          Alert.alert("Error", "You do not have permission to view these goals.");
+        }
+      );
+  
+      // Clean up listener on unmount
+      return unsubscribe;
+    }
   }, []);
+  
+  
 
   async function handleInputData(inputData) {
 

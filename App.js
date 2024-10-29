@@ -14,6 +14,47 @@ import Profile from "./components/Profile";
 
 const Stack = createNativeStackNavigator();
 
+// Define Auth Stack Navigator
+const AuthStackNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="Login" component={Login} options={{ title: "Login" }} />
+    <Stack.Screen name="Signup" component={Signup} options={{ title: "Sign Up" }} />
+  </Stack.Navigator>
+);
+
+// Define App Stack Navigator
+const AppStackNavigator = ({ handleSignOut }) => (
+  <Stack.Navigator>
+    <Stack.Screen 
+      name="Home" 
+      component={Home} 
+      options={({ navigation }) => ({
+        title: "My Goal",
+        headerRight: () => (
+          <Button
+            title="Profile"
+            onPress={() => navigation.navigate("Profile")}
+          />
+        ),
+      })}
+    />
+    <Stack.Screen name="Details" component={GoalDetails} />
+    <Stack.Screen 
+      name="Profile" 
+      component={Profile} 
+      options={({ navigation }) => ({
+        title: "Profile",
+        headerRight: () => (
+          <Button
+            title="Sign Out"
+            onPress={() => handleSignOut(navigation)}
+          />
+        ),
+      })}
+    />
+  </Stack.Navigator>
+);
+
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -21,65 +62,27 @@ export default function App() {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsAuthenticated(!!user);
     });
-    return ()=>unsubscribe;
+    return unsubscribe;
   }, []);
 
-  const handleSignOut = async (navigation) => {
+  const handleSignOut = async () => {
     try {
       await signOut(auth);
       Alert.alert("Success", "You have been signed out.");
-      navigation.replace("Login");
+      setIsAuthenticated(false); // Update state directly
     } catch (error) {
       console.error(error);
       Alert.alert("Error", error.message);
     }
   };
 
-  const screenStyling = {
-    headerStyle: { backgroundColor: 'skyblue' },
-    headerTintColor: 'white'
-  };
-
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={screenStyling}>
-        {isAuthenticated ? (
-          <>
-            <Stack.Screen 
-              name="Home" 
-              component={Home} 
-              options={({ navigation }) => ({
-                title: "My Goal",
-                headerRight: () => (
-                  <Button
-                    title="Profile"
-                    onPress={() => navigation.navigate("Profile")}
-                  />
-                ),
-              })}
-            />
-            <Stack.Screen name="Details" component={GoalDetails} />
-            <Stack.Screen 
-              name="Profile" 
-              component={Profile} 
-              options={({ navigation }) => ({
-                title: "Profile",
-                headerRight: () => (
-                  <Button
-                    title="Sign Out"
-                    onPress={() => handleSignOut(navigation)}
-                  />
-                ),
-              })}
-            />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="Login" component={Login} options={{ title: "Login" }} />
-            <Stack.Screen name="Signup" component={Signup} options={{ title: "Sign Up" }} />
-          </>
-        )}
-      </Stack.Navigator>
+      {isAuthenticated ? (
+        <AppStackNavigator handleSignOut={handleSignOut} />
+      ) : (
+        <AuthStackNavigator />
+      )}
     </NavigationContainer>
   );
 }

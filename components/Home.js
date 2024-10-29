@@ -14,20 +14,21 @@ export default function Home({navigation}) {
   const [goals, setGoals] = useState([]);
   const [modalVisibility, setModalVisibility] = useState(false);
 
-  useEffect(()=>{
-    onSnapshot(collection(database, 'goals'), (querySnapshot)=>{
-      const updatedGoals=[]
-      
-      querySnapshot.forEach((docSnapshot)=>{
-        
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(database, 'goals'), (querySnapshot) => {
+      const updatedGoals = [];
+      querySnapshot.forEach((docSnapshot) => {
         updatedGoals.push({ id: docSnapshot.id, ...docSnapshot.data() });
-        console.log("updatedGoals: ",updatedGoals);
-        console.log("snapshot.data: ", docSnapshot.data())
+        console.log("updatedGoals: ", updatedGoals);
+        console.log("snapshot.data: ", docSnapshot.data());
       });
-    setGoals(updatedGoals);
-  });
-    return () => unsubscribe();
+      setGoals(updatedGoals);
+    });
+  
+    // Return unsubscribe function to clean up the listener
+    return unsubscribe;
   }, []);
+  
 
   async function handleInputData(inputData) {
 

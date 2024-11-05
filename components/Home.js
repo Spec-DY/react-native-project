@@ -47,13 +47,13 @@ export default function Home({navigation}) {
   
   
 
-  async function handleInputData(inputData) {
-
-    const newGoal = {text: inputData}
-    console.log("newGoal: ", newGoal)
+  async function handleInputData({text, imageUri}) {
+    const newGoal = {text:text, imageUri
+    };
+  
+    console.log("newGoal: ", newGoal);
     await writeToDB("goals", newGoal);
-
-    // set modal
+  
     setModalVisibility(false);
   }
 

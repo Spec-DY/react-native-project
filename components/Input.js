@@ -1,19 +1,28 @@
 import { useState } from "react";
 import { View, TextInput, Text, StyleSheet, Button, Modal, Image } from "react-native";
+import ImageManager from "./ImageManager";
 
 const Input = ({autoFocus, onConfirm, modalVisibility, onCancel}) => {
     const [text, setText] = useState('')
     const [hasBlurred, setHasBlurred] = useState('')
     const handleBlur = ()=> {setHasBlurred(true)};
     const handleFocus = ()=> {setHasBlurred(false)};
-    function handleConfirm() {
-        onConfirm(text)
-        setText("")
-    }
+    const [imageUri, setImageUri] = useState(null);
+
+    const handleImageTaken = (uri) => {
+        setImageUri(uri);
+    };
+    
+    const handleConfirm = () => {
+        onConfirm({ text, imageUri });
+        setText("");
+        setImageUri(null);
+    };
 
     function handleCancel() {
         onCancel()
         setText("")
+        setImageUri(null);
     }
 
     return(
@@ -62,7 +71,11 @@ const Input = ({autoFocus, onConfirm, modalVisibility, onCancel}) => {
                         
                         
                     </View>
+                    <ImageManager onImageTaken={handleImageTaken} />
 
+                    {imageUri && (
+                        <Image source={{ uri: imageUri }} style={styles.image} />
+                    )}
                 </View>
             </View>
         </Modal>
@@ -101,7 +114,12 @@ const styles = StyleSheet.create({
     image: {
         width:100,
         height:100
-    }
+    },
+    image: {
+        width: 100,
+        height: 100,
+        marginTop: 10,
+      },
 });
 
 export default Input;
